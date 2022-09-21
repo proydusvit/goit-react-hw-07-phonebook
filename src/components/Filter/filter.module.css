@@ -1,0 +1,12 @@
+.box{
+    text-align: center;
+}
+li{
+    list-style-type: none;
+}
+.btn{
+    color: white;
+    border: 2px solid white;
+    background-color: red;
+    box-shadow: 10px 5px 5px rgba(249, 37, 37, 0.84);
+}

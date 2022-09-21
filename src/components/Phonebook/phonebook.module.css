@@ -1,0 +1,15 @@
+.box{
+    border: 2px solid black;
+    text-align: center;
+    box-shadow: 10px 5px 5px black;
+}
+input{
+    margin-bottom: 20px;
+    box-shadow: 10px 5px 5px black;
+}
+button{
+    padding: 10px 20px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    box-shadow: 10px 5px 5px rgba(51, 197, 255, 0.84);
+}
