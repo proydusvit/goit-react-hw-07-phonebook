@@ -1,39 +1,120 @@
 
-import React, { Component } from "react";
+// import React, { Component } from "react";
+// import { nanoid } from 'nanoid';
+// import style from 'components/Phonebook/phonebook.module.css'
+// import { useState } from 'react';
+
+// class Phonebook extends Component {
+//   state = {
+//     name: '',
+//     number: ''
+//   }
+
+    
+//  nameId = nanoid();
+// numberId = nanoid();
+
+//  handleChange = (e) => {
+//     const {name, value} = e.target
+//     this.setState({
+//       [name]: value,
+    
+//     })
+//  }
+//     handleSubmit = (e) => {
+//     e.preventDefault() 
+//         const { name, number } = this.state;
+//         this.props.onSubmit({ name, number });
+//     this.setState({
+//        name: '',
+//    number: ''
+//     })
+   
+//   }
+
+//  render() {
+//         const { nameId, numberId, handleSubmit} = this;
+       
+//      return (
+//          <div className={style.box}>
+//   <h1>Phonebook</h1>
+//              <form onSubmit={handleSubmit}>
+//                  Name
+//                  <div>
+                     
+//           <label htmlFor={nameId}></label>
+//         <input
+//   type="text"
+//   name="name"
+//   pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+//   title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+//           required
+//           value={this.state.name}
+//           id={nameId}
+//           onChange={this.handleChange}
+//           />
+//                  </div>
+//                  Number
+//          <div>
+//         <label htmlFor={numberId}></label>     
+//         <input
+//   type="tel"
+//   name="number"
+//   pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+//   title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+//           required
+//           value={this.state.number}
+//           id={numberId}
+//             onChange={this.handleChange}
+// /></div>
+//          <button type="submit">Add contact</button>
+//                 </form>
+//                 </div>
+//      )
+//     }
+// }
+// export default Phonebook;
+
+
+
 import { nanoid } from 'nanoid';
 import style from 'components/Phonebook/phonebook.module.css'
+import { useState } from 'react';
 
-
-class Phonebook extends Component {
-state = {
-       name: '',
-        number: ''
-       }
+function Phonebook({ onSubmit }) {
+    const[name, setName] = useState('');
+    const [number, setNumber] = useState('');
     
- nameId = nanoid();
-numberId = nanoid();
+const nameId = nanoid();
+ const numberId = nanoid();
 
- handleChange = (e) => {
+ const handleChange = (e) => {
     const {name, value} = e.target
-    this.setState({
-      [name]: value,
-    
-    })
+     switch (name) {
+            case 'name':
+                setName(value);
+                break;
+            
+            case 'number':
+                setNumber(value);
+                break;
+            
+            default:
+                return;
+        }
  }
-    handleSubmit = (e) => {
+    const handleSubmit = (e) => {
     e.preventDefault() 
-        const { name, number } = this.state;
-        this.props.onSubmit({ name, number });
-    this.setState({
-       name: '',
-   number: ''
-    })
-   
-  }
-
- render() {
-        const { nameId, numberId, handleSubmit} = this;
-       
+      
+      onSubmit({ name:name, number:number });
+    reset();
+    }
+ const reset = () => {
+        setName('');
+        setNumber('');
+    }
+ 
+        
      return (
          <div className={style.box}>
   <h1>Phonebook</h1>
@@ -48,9 +129,9 @@ numberId = nanoid();
   pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
   title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
-          value={this.state.name}
+          value={name}
           id={nameId}
-          onChange={this.handleChange}
+          onChange={handleChange}
           />
                  </div>
                  Number
@@ -62,15 +143,15 @@ numberId = nanoid();
   pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
   title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
-          value={this.state.number}
+          value={number}
           id={numberId}
-            onChange={this.handleChange}
+            onChange={handleChange}
 /></div>
          <button type="submit">Add contact</button>
                 </form>
                 </div>
      )
-    }
+    
 }
 export default Phonebook;
 

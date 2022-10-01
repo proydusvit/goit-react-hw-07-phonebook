@@ -1,67 +1,53 @@
-import React, { Component } from "react";
+import { useState, useEffect } from 'react'
 import ContactList from "./ContactList/contactlist";
 import Phonebook from "./Phonebook/phonebook";
 import { nanoid } from 'nanoid';
  import { FilterContacts } from "./Filter/filter";
-class App extends Component {
-     state = {
-       contacts: [],
-       filter: '',
-      
-     }
-  componentDidMount() {
-    const contacts = JSON.parse(localStorage.getItem("contacts"));
 
-    console.log("contacts", contacts);
-    if (contacts?.length) {
-      this.setState({
-        contacts,
-      })
-    }
+function  App() {
+  const [contacts, setConstacts] = useState(() => {
+    return JSON.parse(window.localStorage.getItem('contacts'))
+      ?? []
+  });
+  const [filter, setFilter] = useState('');
 
-  }
-  componentDidUpdate(prevProps, prevState) {
-    
-    const { contacts } = this.state;
-
-    if (prevState.contacts !== contacts) {
-       localStorage.setItem("contacts", JSON.stringify(contacts))
-    }
+  useEffect(() => {
+    window.localStorage.setItem('contacts', JSON.stringify(contacts))
+  }, [contacts]);
+  
+ 
+  const addContacts = (data) => {
    
-  }
-  addContacts = (data) => {
-    if (this.isDublicate(data)) {
-     return alert (`${data.name} is already in contacts.`)
-   }
-   this.setState((prev) => {
-     const newContact = {
-       id: nanoid(),
-       ...data
-      }
-      return {
-        contacts: [...prev.contacts, newContact]
-      }
-  })
- }
-   removeContacts = (id) => {
-    this.setState(( prev ) => {
-      const newContacts = prev.contacts.filter((item) => item.id !== id);
-
-      return {
-        contacts: newContacts
-      }
+    if (isDublicate(data)) {
+      return alert(`${data.name} is already in contacts.`)
     }
-    )
-   }
-  isDublicate({ name, number }) {
-    const { contacts } = this.state;
+ 
+    const newContact = {
+      id: nanoid(),
+      ...data
+    }
+   setConstacts((prev) => ([...prev, newContact]))
+  
+  }
+  const removeContacts = (id) => {
+    setConstacts((prev) => {
+      const newContacts = prev.filter((item) => item.id !== id);
+
+      return newContacts
+    })
+    if (conFilter.length === 1) {
+            
+      setFilter('');
+    }
+  }
+  const isDublicate = (name, number) => {
+ 
     const result = contacts.find((item) => item.name === name && item.number === number);
     return result;
   }
   
   
-  filterContact() {
-    const { contacts, filter } = this.state
+  const filterContact = () => {
     if (!filter) {
       return contacts;
     }
@@ -70,42 +56,34 @@ class App extends Component {
     const filterContact = contacts.filter(({ name, number }) => {
       const normalizedName = name.toLocaleLowerCase();
       const normalizedNumber = number.toLocaleLowerCase();
-      const result = normalizedName.includes(normalized) || normalizedNumber.includes(normalized) 
+      const result = normalizedName.includes(normalized) || normalizedNumber.includes(normalized)
       return result
-    } )
-return filterContact
-  }
-
- handleChange = (e) => {
-    const {name, value} = e.target
-    this.setState({
-      [name]: value,
-    
     })
- }
+    return filterContact
+  }
   
-  render() {
-    const { addContacts,handleChange,removeContacts } = this;
-    const { filter } = this.state;
-    const contacts = this.filterContact()
-    return <div
-       style={{
-        height: '100vh',
-        display: 'block',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      
-      
-      <Phonebook onSubmit={addContacts} />
-      <FilterContacts  handleChange={handleChange} filter={filter} /> 
-      <ContactList items={contacts} removeContacts={removeContacts} />
-        
-    </div>
-    }
+  const conFilter = filterContact();
 
-};
+  const handleChange = (e) => {
+    const { value } = e.target;
+    setFilter(value)
+  }
+    
+  return (<div
+    style={{
+      height: '100vh',
+      display: 'block',
+      justifyContent: 'center',
+      alignItems: 'center',
+      fontSize: 40,
+      color: '#010101'
+    }}
+  >
+        
+    <Phonebook onSubmit={addContacts} />
+    <FilterContacts handleChange={handleChange} filter={filter} />
+    <ContactList items={contacts} removeContacts={removeContacts} />
+        
+  </div>)
+}
 export default App;
