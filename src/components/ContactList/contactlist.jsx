@@ -2,7 +2,7 @@ import style from 'components/Filter/filter.module.css'
 import PropTypes from 'prop-types';
 export default function ContactList({ items, removeContacts }) {
     console.log(items);
-    const elem = items.map(({ name, number, id }) => {
+    const elem = items.map(({ name, number, id}) => {
         return <li key={id}> {name} , {number} <button className={style.btn} onClick={() => removeContacts(id)}>delete</button></li>
     })
     return (
