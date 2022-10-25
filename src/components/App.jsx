@@ -3,11 +3,12 @@ import ContactList from "./ContactList/contactlist";
 import Phonebook from "./Phonebook/phonebook";
  import { FilterContacts } from "./Filter/filter";
  import { useSelector } from "react-redux";
- import { getContacts } from 'redux/contacts/contacts-selectors';
+ 
  import { getFilter } from 'redux/filter/filter-selectors';
  import { useDispatch } from "react-redux";
  import { addContacts,removeContacts } from "redux/contacts/contacts-slice";
  import { setFilter } from "redux/filter/filter-slice";
+ import { getContacts} from "redux/contacts/contacts-selectors";
 
 
 function  App() {
@@ -40,23 +41,23 @@ const dispatch = useDispatch();
     const { value } = e.target;
     dispatch(setFilter(value))
   }
+  const filterContact = ( ) => {
+   
+     if (!filter) {
+       return contacts;
+     }
+   
+     const normalized = filter.toLocaleLowerCase();
+     const filterContacts = contacts.filter(({ name, number }) => {
+       const normalizedName = name.toLocaleLowerCase();
+       const normalizedNumber = number.toLocaleLowerCase();
+       const result = normalizedName.includes(normalized) || normalizedNumber.includes(normalized)
+       return result
+     })
+     return filterContacts
+   }
+  const contactFilter = filterContact();
   
- const filterContact = (contact, filter) => {
-    
-  if (!filter) {
-    return contact;
-  }
-
-  const normalized = filter.toLocaleLowerCase();
-  const filterContacts = contact.filter(({ name, number }) => {
-    const normalizedName = name.toLocaleLowerCase();
-    const normalizedNumber = number.toLocaleLowerCase();
-    const result = normalizedName.includes(normalized) || normalizedNumber.includes(normalized)
-    return result
-  })
-  return filterContacts
-}
-const filteredContacts = filterContact();
 
   return (<div
     style={{
@@ -70,8 +71,8 @@ const filteredContacts = filterContact();
   >
         
     <Phonebook onSubmit={onAddContacts}/>
-    <FilterContacts handleChange={handleChange} filter={filteredContacts} />
-    <ContactList items={contacts} removeContacts={onRemoveContacts} />
+    <FilterContacts handleChange={handleChange} filters={filter} />
+    <ContactList items={contactFilter} removeContacts={onRemoveContacts} />
         
   </div>)
 }
