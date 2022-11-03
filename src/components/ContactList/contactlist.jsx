@@ -1,9 +1,40 @@
 import style from 'components/Filter/filter.module.css'
 import PropTypes from 'prop-types';
-export default function ContactList({ items, removeContacts }) {
-    console.log(items);
-    const elem = items.map(({ name, number, id}) => {
-        return <li key={id}> {name} , {number} <button className={style.btn} onClick={() => removeContacts(id)}>delete</button></li>
+import { useDispatch, useSelector } from 'react-redux';
+
+import { setFilter } from 'redux/filter/filter-slice';
+import { deleteContact} from 'redux/services/services';
+// import { selectContacts } from 'redux/selectors';
+import { selectFilterdContacts } from 'redux/selectors';
+import { fetchContacts } from 'redux/services/services';
+import { useEffect } from 'react';
+
+
+export default function ContactList() {
+    // const { isLoading } = useSelector(selectContacts);
+    const dispatch = useDispatch();  
+    const contacts = useSelector(selectFilterdContacts);
+
+      useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+      
+
+
+    const removeContact = (id) => {
+        const action = deleteContact(id);
+        dispatch(action);
+        if (contacts.length === 1) {
+            dispatch(setFilter(""));
+            
+         alert('No more contacts matching the filter.');
+       }   
+     }  
+    
+
+
+    const elem = contacts.map(({ name, phone , id}) => {
+        return <li key={id}> {name} , {phone} <button className={style.btn} onClick={() => removeContact(id)}>delete</button> </li>
     })
     return (
         <div className={style.box}>
@@ -12,7 +43,8 @@ export default function ContactList({ items, removeContacts }) {
 
         </div>
     )
-}
+
+    }
 
 ContactList.prototype = {
      items: PropTypes.arrayOf(
