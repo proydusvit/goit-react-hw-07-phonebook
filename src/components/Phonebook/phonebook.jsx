@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 import style from 'components/Phonebook/phonebook.module.css'
 import { useState } from 'react';
 import { useDispatch } from "react-redux";
-import { addContact } from 'redux/services/services';
+import { addContact } from 'redux/operation/operation';
 
 function Phonebook() {
     const[name, setName] = useState('');

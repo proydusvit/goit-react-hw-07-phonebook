@@ -4,7 +4,7 @@ import { contactsReducer } from "./contacts/contacts-slice";
 import {filterReducer} from "./filter/filter-slice";
 
 
-const rootReducers = configureStore ({
+export  const store = configureStore ({
   reducer:{
     contacts: contactsReducer,
     filter: filterReducer
@@ -12,5 +12,5 @@ const rootReducers = configureStore ({
   });
   
 
-export const store = rootReducers;
+
 

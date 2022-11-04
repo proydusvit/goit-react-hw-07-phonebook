@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
      fetchContacts
-} from "redux/services/services";
-import { addContact } from "redux/services/services";
-import { deleteContact } from "redux/services/services";
+} from "redux/operation/operation";
+import { addContact } from "redux/operation/operation";
+import { deleteContact } from "redux/operation/operation";
 
 
 

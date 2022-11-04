@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setFilter } from 'redux/filter/filter-slice';
-import { deleteContact} from 'redux/services/services';
+import { deleteContact} from 'redux/operation/operation';
 // import { selectContacts } from 'redux/selectors';
 import { selectFilterdContacts } from 'redux/selectors';
-import { fetchContacts } from 'redux/services/services';
+import { fetchContacts } from 'redux/operation/operation';
 import { useEffect } from 'react';
 
 
